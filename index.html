@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guia Milho B3 | TheWise HiLo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#050505;
+      --surface:#0e0e0e;
+      --surface2:#151515;
+      --gold:#f2b705;
+      --gold2:#ffd86b;
+      --green:#1f7a4d;
+      --green2:#23c177;
+      --blue:#101f35;
+      --text:#f6f2e8;
+      --muted:#9b9b9b;
+      --border:rgba(255,255,255,.09);
+      --danger:#ffcc66;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{
+      font-family:Inter,system-ui,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      overflow-x:hidden;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background:
+        radial-gradient(circle at 20% 0%,rgba(242,183,5,.18),transparent 32%),
+        radial-gradient(circle at 90% 18%,rgba(31,122,77,.12),transparent 28%),
+        radial-gradient(circle at 50% 100%,rgba(16,31,53,.42),transparent 42%);
+      z-index:-2;
+    }
+
+    body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+      background-size:48px 48px;
+      mask-image:linear-gradient(to bottom,rgba(0,0,0,.9),rgba(0,0,0,.15));
+      z-index:-1;
+      pointer-events:none;
+    }
+
+    a{color:inherit;text-decoration:none;}
+    .container{width:min(1180px,calc(100% - 40px));margin:0 auto;}
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:30;
+      backdrop-filter:blur(18px);
+      background:rgba(5,5,5,.82);
+      border-bottom:1px solid var(--border);
+    }
+    .nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:18px;}
+    .brand{display:flex;align-items:center;gap:14px;min-width:0;}
+    .brand-icon{
+      width:48px;height:48px;border-radius:16px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg,rgba(242,183,5,.22),rgba(31,122,77,.10));
+      border:1px solid rgba(242,183,5,.28);
+      box-shadow:0 0 30px rgba(242,183,5,.12);
+      font-size:25px;
+    }
+    .brand-title{font-weight:900;letter-spacing:-.04em;font-size:18px;line-height:1.05;}
+    .brand-title span{color:var(--gold);}
+    .brand-sub{font-size:10px;color:var(--muted);letter-spacing:.20em;margin-top:4px;text-transform:uppercase;}
+    .nav-actions{display:flex;gap:10px;align-items:center;}
+
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      padding:13px 18px;border-radius:14px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      font-size:13px;font-weight:800;
+      transition:.25s ease;
+      white-space:nowrap;
+    }
+    .btn:hover{transform:translateY(-2px);border-color:rgba(242,183,5,.35);}
+    .btn-primary{background:linear-gradient(135deg,var(--gold),#ffe08a);color:#161000;border:none;box-shadow:0 16px 42px rgba(242,183,5,.24);}
+    .btn-primary:hover{box-shadow:0 24px 55px rgba(242,183,5,.33);}
+
+    .hero{padding:82px 0 70px;display:grid;grid-template-columns:1.05fr .95fr;gap:54px;align-items:center;}
+    .eyebrow{
+      display:inline-flex;gap:10px;align-items:center;
+      padding:10px 15px;border-radius:999px;
+      border:1px solid rgba(242,183,5,.25);
+      background:rgba(242,183,5,.08);
+      color:var(--gold2);font-size:13px;font-weight:800;
+      margin-bottom:24px;
+    }
+    .hero h1{
+      font-size:clamp(46px,7vw,92px);
+      line-height:.88;letter-spacing:-.075em;font-weight:950;
+      margin-bottom:24px;
+    }
+    .hero h1 .gold{color:var(--gold);text-shadow:0 0 35px rgba(242,183,5,.25);}
+    .hero p{font-size:18px;line-height:1.75;color:#ddd;max-width:680px;margin-bottom:30px;}
+    .hero-note{color:var(--muted);font-size:13px;line-height:1.7;border-left:3px solid var(--gold);padding-left:16px;margin-top:24px;}
+
+    .hero-panel{
+      position:relative;border-radius:34px;padding:18px;
+      background:linear-gradient(135deg,rgba(242,183,5,.16),rgba(255,255,255,.035),rgba(31,122,77,.12));
+      border:1px solid rgba(242,183,5,.22);
+      box-shadow:0 40px 100px rgba(0,0,0,.55);
+      overflow:hidden;
+    }
+    .hero-panel::before{
+      content:"";position:absolute;inset:-35%;
+      background:conic-gradient(from 180deg,transparent,rgba(242,183,5,.14),transparent,rgba(35,193,119,.08),transparent);
+      animation:spin 12s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .mockup{position:relative;background:#0a0a0a;border:1px solid var(--border);border-radius:26px;padding:18px;overflow:hidden;}
+    .mockup img{width:100%;display:block;border-radius:20px;border:1px solid rgba(255,255,255,.08);}
+    .floating-card{
+      position:absolute;left:28px;bottom:28px;
+      background:rgba(10,10,10,.82);backdrop-filter:blur(16px);
+      border:1px solid rgba(242,183,5,.25);border-radius:20px;
+      padding:15px 17px;box-shadow:0 18px 50px rgba(0,0,0,.4);
+    }
+    .floating-card strong{display:block;color:var(--gold);font-size:20px;margin-bottom:3px;}
+    .floating-card span{color:var(--muted);font-size:12px;}
+
+    .section{padding:74px 0;}
+    .section-head{text-align:center;margin-bottom:42px;}
+    .section-head .kicker{color:var(--gold);font-size:12px;text-transform:uppercase;letter-spacing:.22em;font-weight:900;margin-bottom:12px;display:block;}
+    .section-head h2{font-size:clamp(32px,5vw,58px);letter-spacing:-.055em;line-height:1;font-weight:950;margin-bottom:16px;}
+    .section-head p{color:var(--muted);line-height:1.8;max-width:760px;margin:0 auto;}
+
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px;}
+    .card{
+      grid-column:span 4;
+      background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.025));
+      border:1px solid var(--border);border-radius:26px;padding:26px;
+      min-height:220px;position:relative;overflow:hidden;
+      transition:.25s ease;
+    }
+    .card:hover{transform:translateY(-5px);border-color:rgba(242,183,5,.28);}
+    .card::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at top left,rgba(242,183,5,.11),transparent 50%);opacity:.85;pointer-events:none;}
+    .card > *{position:relative;}
+    .icon{width:60px;height:60px;border-radius:18px;background:rgba(242,183,5,.1);border:1px solid rgba(242,183,5,.18);display:grid;place-items:center;font-size:28px;margin-bottom:18px;}
+    .card h3{font-size:21px;margin-bottom:10px;letter-spacing:-.03em;}
+    .card p{color:var(--muted);line-height:1.75;font-size:14px;}
+
+    .wide{grid-column:span 8;}
+    .half{grid-column:span 6;}
+    .full{grid-column:1/-1;}
+
+    .data-table{width:100%;border-collapse:collapse;overflow:hidden;border-radius:22px;background:rgba(255,255,255,.03);border:1px solid var(--border);}
+    .data-table th,.data-table td{padding:16px;border-bottom:1px solid var(--border);text-align:left;font-size:14px;}
+    .data-table th{color:var(--gold);background:rgba(242,183,5,.07);font-size:12px;text-transform:uppercase;letter-spacing:.12em;}
+    .data-table td{color:#ddd;}
+    .data-table tr:last-child td{border-bottom:none;}
+
+    .quote{
+      border-radius:32px;padding:40px;
+      background:linear-gradient(135deg,rgba(242,183,5,.12),rgba(31,122,77,.08));
+      border:1px solid rgba(242,183,5,.24);text-align:center;
+    }
+    .quote h2{font-size:clamp(30px,5vw,62px);line-height:1.05;letter-spacing:-.055em;margin-bottom:16px;}
+    .quote span{color:var(--gold);}
+    .quote p{color:#d8d8d8;line-height:1.8;max-width:800px;margin:0 auto;}
+
+    .authors{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+    .author-card{
+      position:relative;overflow:hidden;border-radius:32px;padding:28px;
+      min-height:440px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.025));
+      border:1px solid var(--border);display:flex;flex-direction:column;justify-content:flex-end;
+    }
+    .author-card::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(242,183,5,.16),transparent 52%);}
+    .author-photo{position:absolute;right:0;top:18px;width:58%;max-height:310px;object-fit:contain;filter:drop-shadow(0 24px 50px rgba(0,0,0,.45));}
+    .author-content{position:relative;z-index:2;background:linear-gradient(180deg,rgba(5,5,5,.28),rgba(5,5,5,.72));border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:22px;backdrop-filter:blur(12px);}
+    .role{display:inline-flex;padding:7px 11px;border-radius:999px;background:rgba(242,183,5,.10);border:1px solid rgba(242,183,5,.22);color:var(--gold);font-weight:900;font-size:11px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px;}
+    .author-content h3{font-size:30px;letter-spacing:-.05em;margin-bottom:8px;}
+    .author-content p{color:#d2d2d2;line-height:1.75;font-size:14px;}
+
+    .cta{
+      margin:40px 0 78px;border-radius:36px;padding:46px;
+      background:
+        radial-gradient(circle at top left,rgba(242,183,5,.18),transparent 40%),
+        linear-gradient(135deg,rgba(255,255,255,.065),rgba(255,255,255,.025));
+      border:1px solid rgba(242,183,5,.22);
+      display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:center;
+    }
+    .cta h2{font-size:clamp(32px,5vw,58px);line-height:1;letter-spacing:-.055em;margin-bottom:16px;}
+    .cta p{color:var(--muted);line-height:1.8;}
+    .cta-actions{display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap;}
+
+    .footer{padding:36px 0;border-top:1px solid var(--border);color:var(--muted);text-align:center;font-size:13px;line-height:1.8;}
+    .footer strong{color:var(--gold);}
+
+    @media(max-width:980px){
+      .hero{grid-template-columns:1fr;padding-top:48px;}
+      .card,.wide,.half{grid-column:1/-1;}
+      .authors{grid-template-columns:1fr;}
+      .cta{grid-template-columns:1fr;text-align:center;}
+      .cta-actions{justify-content:center;}
+      .nav-actions .btn-secondary{display:none;}
+    }
+    @media(max-width:620px){
+      .container{width:min(100% - 28px,1180px);}
+      .nav{height:70px;}
+      .brand-sub{display:none;}
+      .hero p{font-size:16px;}
+      .hero-buttons{display:flex;flex-direction:column;}
+      .btn{width:100%;}
+      .floating-card{position:relative;left:auto;bottom:auto;margin-top:14px;}
+      .section{padding:54px 0;}
+      .card{padding:22px;}
+      .data-table th,.data-table td{padding:12px;font-size:12px;}
+      .quote,.cta{padding:28px;}
+      .author-card{min-height:510px;}
+      .author-photo{width:82%;right:-32px;top:10px;}
+    }
+
+    @media print{
+      .topbar,.cta-actions{display:none;}
+      body{background:#080808;color:#fff;}
+      .section,.hero{break-inside:avoid;page-break-inside:avoid;}
+      .card,.quote,.author-card,.cta{break-inside:avoid;}
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="container nav">
+      <a class="brand" href="#top">
+        <div class="brand-icon">🌽</div>
+        <div>
+          <div class="brand-title">Guia Milho B3 <span>TheWise HiLo</span></div>
+          <div class="brand-sub">Agro • Trading • Automação</div>
+        </div>
+      </a>
+      <div class="nav-actions">
+        <a class="btn btn-secondary" href="#autores">Autores</a>
+        <a class="btn btn-primary" href="https://rogerinhoramos.github.io/thewise-hilo-landing/" target="_blank">🚀 Conheça o Robô</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero container">
+      <div>
+        <div class="eyebrow">📘 eBook interativo oficial</div>
+        <h1>Operando <span class="gold">Milho</span><br>na B3</h1>
+        <p>
+          Um guia moderno sobre contratos futuros de milho, tickers, vencimentos, liquidez, valor por tick,
+          gestão de risco e automação operacional no MetaTrader 5.
+        </p>
+        <div class="hero-buttons">
+          <a class="btn btn-primary" href="#comece">✨ Começar leitura</a>
+          <a class="btn btn-secondary" href="https://rogerinhoramos.github.io/thewise-hilo-landing/" target="_blank">🤖 Ver TheWise HiLo</a>
+        </div>
+        <div class="hero-note">
+          Material educacional. Mercado financeiro envolve risco. Automação não elimina risco: ajuda a reduzir improviso e falhas de execução.
+        </div>
+      </div>
+
+      <div class="hero-panel">
+        <div class="mockup">
+          <img src="milho04.png" alt="Painel TheWise HiLo no MetaTrader 5">
+          <div class="floating-card">
+            <strong>MT5 • B3 • MQL5</strong>
+            <span>Trading sistemático aplicado ao agro</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="comece" class="section container">
+      <div class="section-head">
+        <span class="kicker">Visão geral</span>
+        <h2>O milho futuro explicado de forma visual</h2>
+        <p>Antes de operar, é preciso entender o contrato, sua dinâmica, vencimentos e riscos. Este guia organiza o essencial em uma experiência simples, moderna e prática.</p>
+      </div>
+
+      <div class="grid">
+        <article class="card">
+          <div class="icon">🌽</div>
+          <h3>Commodity agrícola</h3>
+          <p>O milho futuro acompanha expectativas de preço, safra, oferta, demanda, clima, dólar e fluxo do agronegócio.</p>
+        </article>
+        <article class="card">
+          <div class="icon">📊</div>
+          <h3>Contrato futuro</h3>
+          <p>É um derivativo negociado na B3 que permite proteção, especulação e operações sistemáticas.</p>
+        </article>
+        <article class="card">
+          <div class="icon">🤖</div>
+          <h3>Automação</h3>
+          <p>Com regras claras, a estratégia pode ser estruturada no MetaTrader 5 para reduzir improviso operacional.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section container">
+      <div class="section-head">
+        <span class="kicker">Contrato</span>
+        <h2>Ticker, vencimentos e leitura do código</h2>
+        <p>O primeiro passo para operar milho é entender como o contrato aparece na plataforma e como identificar o mês de vencimento.</p>
+      </div>
+
+      <div class="grid">
+        <div class="card wide">
+          <div class="icon">🔤</div>
+          <h3>Como ler o código</h3>
+          <p><strong>CCMU26</strong> pode ser lido como: CCM = contrato futuro de milho, U = vencimento em setembro, 26 = ano de 2026.</p>
+          <br>
+          <table class="data-table">
+            <thead><tr><th>Letra</th><th>Mês</th><th>Exemplo</th></tr></thead>
+            <tbody>
+              <tr><td>F</td><td>Janeiro</td><td>CCMF26</td></tr>
+              <tr><td>H</td><td>Março</td><td>CCMH26</td></tr>
+              <tr><td>K</td><td>Maio</td><td>CCMK26</td></tr>
+              <tr><td>N</td><td>Julho</td><td>CCMN26</td></tr>
+              <tr><td>U</td><td>Setembro</td><td>CCMU26</td></tr>
+              <tr><td>X</td><td>Novembro</td><td>CCMX26</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <div class="icon">📦</div>
+          <h3>Tamanho</h3>
+          <p>O contrato de milho representa 450 sacas de 60 kg. Por isso, pequenos movimentos podem gerar variação financeira relevante.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container">
+      <div class="quote">
+        <h2>Trading não é emoção.<br><span>É processo.</span></h2>
+        <p>Uma estratégia precisa ser objetiva o suficiente para ser analisada, repetida, monitorada e melhorada. É aqui que a automação começa a fazer sentido.</p>
+      </div>
+    </section>
+
+    <section class="section container">
+      <div class="section-head">
+        <span class="kicker">Operacional</span>
+        <h2>Liquidez, tick e risco</h2>
+        <p>O mercado de milho tem características próprias. Liquidez, spread, horário e vencimento precisam ser avaliados antes da execução.</p>
+      </div>
+
+      <div class="grid">
+        <article class="card half">
+          <div class="icon">💧</div>
+          <h3>Liquidez</h3>
+          <p>Normalmente os vencimentos mais próximos concentram mais volume, mas isso pode variar conforme safra, notícias, calendário e fluxo de mercado.</p>
+        </article>
+        <article class="card half">
+          <div class="icon">💰</div>
+          <h3>Valor por tick</h3>
+          <p>A menor oscilação costuma ser 0,01. O impacto financeiro deve ser calculado considerando o tamanho do contrato e a quantidade operada.</p>
+        </article>
+        <article class="card half">
+          <div class="icon">🛡️</div>
+          <h3>Gestão de risco</h3>
+          <p>Stop, tamanho de posição, margem, volatilidade e limite diário precisam fazer parte do plano antes da operação acontecer.</p>
+        </article>
+        <article class="card half">
+          <div class="icon">⏰</div>
+          <h3>Horários</h3>
+          <p>Nem todo momento do pregão oferece a mesma qualidade operacional. O robô precisa respeitar janelas e filtros de mercado.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section container">
+      <div class="section-head">
+        <span class="kicker">TheWise HiLo</span>
+        <h2>Do operacional à automação</h2>
+        <p>O projeto nasceu da união entre a experiência operacional de Marcos Cruz e o desenvolvimento tecnológico de Rogerinho Ramos.</p>
+      </div>
+
+      <div class="grid">
+        <article class="card">
+          <div class="icon">📈</div>
+          <h3>Operacional</h3>
+          <p>Regras, leitura de mercado, contexto e critérios práticos utilizados por quem acompanha o mercado.</p>
+        </article>
+        <article class="card">
+          <div class="icon">⚙️</div>
+          <h3>Automação</h3>
+          <p>Transformação da lógica operacional em estrutura programável no MetaTrader 5 usando MQL5.</p>
+        </article>
+        <article class="card">
+          <div class="icon">🔁</div>
+          <h3>Evolução</h3>
+          <p>Monitoramento, ajustes, melhoria contínua e foco em disciplina operacional.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="autores" class="section container">
+      <div class="section-head">
+        <span class="kicker">Autores</span>
+        <h2>Experiência operacional + tecnologia</h2>
+        <p>Uma parceria construída por vivência profissional, estudo de mercado e desenvolvimento de soluções aplicadas.</p>
+      </div>
+
+      <div class="authors">
+        <article class="author-card">
+          <img class="author-photo" src="rogerinho.png" alt="Rogerinho Ramos">
+          <div class="author-content">
+            <span class="role">Desenvolvedor</span>
+            <h3>Rogerinho Ramos</h3>
+            <p>Líder de processos, desenvolvedor de soluções tecnológicas e responsável pela automação do TheWise HiLo no MetaTrader 5 usando MQL5.</p>
+          </div>
+        </article>
+
+        <article class="author-card">
+          <img class="author-photo" src="marcos.png" alt="Marcos Cruz">
+          <div class="author-content">
+            <span class="role">Trader Operacional</span>
+            <h3>Marcos Cruz</h3>
+            <p>Trader com experiência prática em ações e commodities. Seu operacional serviu como base para a estratégia automatizada do robô.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="cta">
+        <div>
+          <h2>Conheça o robô TheWise HiLo</h2>
+          <p>Automação aplicada ao mercado futuro agrícola, com foco em disciplina operacional, gestão de risco e tecnologia no MetaTrader 5.</p>
+        </div>
+        <div class="cta-actions">
+          <a class="btn btn-primary" href="https://rogerinhoramos.github.io/thewise-hilo-landing/" target="_blank">🚀 Abrir landing</a>
+          <a class="btn btn-secondary" href="https://wa.me/5511999056897?text=Olá+Rogerinho!+Vi+o+Guia+Milho+B3+e+quero+conhecer+o+TheWise+HiLo" target="_blank">💬 Falar comigo</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <strong>Guia Milho B3 — TheWise HiLo</strong><br>
+      Material educacional. Mercado financeiro envolve riscos. Resultados passados não garantem resultados futuros.<br>
+      © 2026 — Rogerinho Ramos & Marcos Cruz
+    </div>
+  </footer>
+</body>
+</html>
